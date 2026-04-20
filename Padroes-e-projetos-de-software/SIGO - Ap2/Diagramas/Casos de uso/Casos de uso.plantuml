@@ -1,0 +1,54 @@
+@startuml
+
+left to right direction
+skinparam actorStyle awesome
+skinparam packageStyle rectangle
+
+' ==== Atores ====
+actor Usuario
+actor Paciente
+actor Dentista
+actor Recepcionista
+
+' Herança: todos herdam de Usuario para usar Autenticar
+Paciente -|> Usuario
+Dentista -|> Usuario
+Recepcionista -|> Usuario
+
+' ==== Caso comum a todos ====
+(Autenticar)
+Usuario --> (Autenticar)
+
+' ==== Casos compartilhados ====
+(Paciente) --> (Agendar Consulta)
+(Recepcionista) --> (Agendar Consulta)
+
+(Paciente) --> (Confirmar Consulta)
+(Recepcionista) --> (Confirmar Consulta)
+
+(Paciente) --> (Cancelar Consulta)
+(Recepcionista) --> (Cancelar Consulta)
+
+(Paciente) --> (Registrar Pagamento)
+(Recepcionista) --> (Registrar Pagamento)
+
+(Paciente) --> (Selecionar Forma de Pagamento)
+(Recepcionista) --> (Selecionar Forma de Pagamento)
+
+(Registrar Pagamento) .> (Selecionar Forma de Pagamento) : <<include>>
+
+
+' ==== Casos específicos da Recepcionista ====
+Recepcionista --> (Cadastrar Paciente)
+Recepcionista --> (Aplicar Desconto)
+Recepcionista --> (Gerar Fatura)
+Recepcionista --> (Emitir Relatórios)
+
+' ==== Casos específicos do Dentista ====
+Dentista --> (Registrar Procedimento)
+Dentista --> (Gerenciar Tratamento)
+(Gerenciar Tratamento) .> (Prescrever Plano de Tratamento) : <<include>>
+
+@enduml
+
+

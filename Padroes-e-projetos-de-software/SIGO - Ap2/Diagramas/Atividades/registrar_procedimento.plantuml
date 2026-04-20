@@ -1,0 +1,30 @@
+@startuml
+start
+
+:Login como adm;
+:Selecionar consulta do paciente;
+
+:Preencher dados do procedimento;
+note right
+Descrição, valor, data de realização, etc.
+end note
+
+:Associar procedimento à consulta;
+if(erro)then (sim)
+    :Exibir mensagem de erro;
+    stop
+else (não)
+    :Validar dados do procedimento;
+    
+    if (Dados válidos?) then (Sim)
+        :Salvar procedimento no sistema;
+    else (Não)
+        :Exibir mensagem de erro;
+        :Solicitar correção;
+        -> Preencher dados do procedimento;
+    endif
+
+:Exibir mensagem "Procedimento registrado com sucesso";
+
+stop
+@enduml

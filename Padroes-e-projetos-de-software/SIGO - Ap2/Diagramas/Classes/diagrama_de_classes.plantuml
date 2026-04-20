@@ -1,0 +1,120 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' Superclasse abstrata para usuários do sistema
+abstract class Usuario {
+  - id: int
+  - nome: string
+  + autenticar(): boolean
+}
+
+class Paciente {
+  - telefone: string
+  - email: string
+  - endereco: string
+  - historicoClinico: string
+  - dadosBancarios: string
+  + agendarConsulta(data, horario)
+  + registrarPagamento()
+}
+
+class Dentista {
+  - especialidade: string
+  - cro: string
+  + registrarProcedimento()
+  + gerenciarTratamento()
+}
+
+class Recepcionista {
+  + cadastrarPaciente(paciente)
+  + agendarConsulta()
+  + registrarPagamento(Pagamento)
+  + gerarFatura()
+  + emitirRelatorios()
+}
+
+class Consulta {
+  - consultas: Lista<Consulta>
+  - id: int
+  - data: Date
+  - horario: Time
+  - status: string
+  + confirmar()
+  + cancelar()
+}
+
+class Procedimento {
+  - id: int
+  - descricao: string
+  - valor: float
+  - dataRealizacao: Date
+  + registrar()
+}
+
+abstract class Pagamento {
+  - id: int
+  - valor: float
+  - dataPagamento: Date
+  + registrar()
+}
+
+class PagamentoDinheiro extends Pagamento {
+}
+
+class PagamentoCartao extends Pagamento {
+  - tipoCartao: string  'ex: crédito, débito'
+  - numeroCartao: string
+}
+
+class PagamentoPIX extends Pagamento {
+  - chavePIX: string
+}
+
+class PagamentoDebitoAutomatico extends Pagamento {
+  - contaBancaria: string
+}
+
+class PlanoTratamento {
+  - id: int
+  - descricao: string
+  - valorTotal: float
+  - duracaoEstimado: int
+  + emitirPlano()
+}
+
+class EtapaTratamento {
+  - id: int
+  - descricao: string
+  - valor: float
+  - duracaoDias: int
+  + recomendar()
+}
+
+class Relatorio {
+  - id: int
+  - tipo: string
+  - dataGeracao: Date
+  + gerar()
+}
+
+' Heranças
+Paciente --|> Usuario
+Dentista --|> Usuario
+Recepcionista --|> Usuario
+
+' Relacionamentos 
+Usuario "1" --  "0..*" Consulta : gerencia >
+Paciente "1" -- "0..*" Consulta : agenda >
+Dentista "1" -- "0..*" Consulta : atende >
+Consulta "1" -- "0..*" Procedimento : inclui >
+Paciente "1" -- "0..*" Pagamento : realiza >
+Recepcionista "1" -- "0..*" Pagamento : processa >
+Dentista "1" -- "0..*" Procedimento : realiza >
+Dentista "1" -- "0..1" PlanoTratamento : cria >
+PlanoTratamento "1" *-- "0..*" EtapaTratamento : contém >
+Paciente "1" -- "0..*" PlanoTratamento : possui >
+Recepcionista "1" -- "0..*" Relatorio : gera >
+Consulta "1" -- "1" Pagamento : possui >
+
+@enduml
+

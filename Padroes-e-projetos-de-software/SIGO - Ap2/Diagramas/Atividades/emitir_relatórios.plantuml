@@ -1,0 +1,25 @@
+@startuml
+start
+
+:Login como adm;
+:Selecionar opção "Emitir Relatório";
+
+:Escolher tipo de relatório;
+note right
+(tipo: string - ex: Consultas, Pagamentos, Procedimentos)
+end note
+
+:Criar relatório;
+
+
+
+if (Relatório gerado com sucesso?) then (Sim)
+    :Exibir relatório na interface;
+    :Oferecer opções de exportação (PDF/Excel);
+else (Não)
+    :Exibir mensagem de erro;
+endif
+
+stop
+@enduml
+
